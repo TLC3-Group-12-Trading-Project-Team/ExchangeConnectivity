@@ -1,0 +1,49 @@
+language: java
+
+sudo: required
+
+dist: trusty
+
+jdk:
+  - openjdk15
+
+services:
+  - docker
+
+addons:
+  ssh_known_hosts:
+    - $EC2_PUBLIC_IP_ADDRESS
+env:
+  jobs: DOCKER_COMPOSE_VERSION=1.27.4
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_5791aa5564ed_key -iv $encrypted_5791aa5564ed_iv -in trade-project.pem.enc -out trade-project.pem -d
+- eval "$(ssh-agent -s)"
+- cp ./trade-project.pem ~/.ssh/id_rsa
+- chmod 600 ~/.ssh/id_rsa
+- ssh-add ~/.ssh/id_rsa
+- pip install --user awscli
+- chmod a+x gradlew
+- export PATH=$PATH:$HOME/.local/bin
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+script:
+- docker-compose build --pull
+- docker tag exchange-connectivity-service-prod:latest elijahahianyo/trade-project:exchange-connectivity-service-prod
+- docker image ls
+- docker push elijahahianyo/trade-project:exchange-connectivity-service-prod
+- echo "DOCKER_PASSWORD=$DOCKER_PASSWORD" > .env
+- echo "DOCKER_USERNAME=$DOCKER_USERNAME" >> .env
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: bash deploy.sh
+    on:
+      branch: master
+

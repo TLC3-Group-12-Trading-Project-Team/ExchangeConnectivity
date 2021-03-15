@@ -1,0 +1,10 @@
+version: '2'
+services:
+  exchange-connectivity-service-prod:
+    container_name: exchange-connectivity-service-prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: exchange-connectivity-service-prod
+    ports:
+      - 51000:51000

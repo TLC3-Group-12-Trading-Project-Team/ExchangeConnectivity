@@ -1,13 +1,13 @@
-package com.example.clientConnectivity;
+package com.example.ExchangeConnectivity;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ClientConnectivityApplication {
+public class ExchangeConnectivityApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ClientConnectivityApplication.class, args);
+		SpringApplication.run(ExchangeConnectivityApplication.class, args);
 	}
 
 }
