@@ -5,3 +5,9 @@ services:
     image: elijahahianyo/trade-project:exchange-connectivity-service-prod
     ports:
       - 51000:51000
+    networks:
+      - trade_project
+
+networks:
+  trade_project:
+    external: true
