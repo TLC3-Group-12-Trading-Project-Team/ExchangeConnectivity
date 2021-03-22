@@ -8,7 +8,6 @@ COPY src src
 
 RUN target=/root/.gradle ./gradlew build -x test
 RUN mkdir -p build/libs/dependency && (cd build/libs/dependency; jar -xf ../*.jar)
-
 FROM openjdk:15-jdk-alpine
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/build/libs/dependency
