@@ -29,6 +29,9 @@ public class RestService {
     @Value("${api.key}")
     private String apiKey;
 
+    @Value("${api.tradeEngine.host}")
+    private String tradeEngineHost;
+
     private OrderTransaction orderTransaction = new OrderTransaction();
     ObjectMapper objectMapper = new ObjectMapper();
 //    public RestService(RestTemplateBuilder restTemplateBuilder) {
@@ -60,7 +63,7 @@ public class RestService {
             orderTransaction.setStatus("active");
             orderTransaction.setOrderId(order.getId());
             HttpEntity<OrderTransaction> transactionRequest = new HttpEntity<>(orderTransaction);
-            String exchangeUri = "http://localhost:23000/orders/"+order.getId() +"/transactions";
+            String exchangeUri = tradeEngineHost+"/orders/"+order.getId() +"/transactions";
             logger.info(exchangeUri);
             ResponseEntity<String> orderTransactionResponse = this.restTemplate.
                                                                                 postForEntity(exchangeUri,
