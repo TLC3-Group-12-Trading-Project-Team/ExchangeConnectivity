@@ -1,8 +1,10 @@
 package com.example.ExchangeConnectivity.redis.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import redis.clients.jedis.Jedis;
 
 @Configuration
@@ -11,11 +13,12 @@ public class RedisConfig {
     int PORT;
 
     @Value("${spring.redis.host}")
-    String URL;
+    String host;
 
     @Bean
     Jedis jedis(){
-        Jedis jedis = new Jedis("172.25.0.2", 6379);
+        Jedis jedis = new Jedis("localhost", 6379);
         return jedis;
     }
+
 }
